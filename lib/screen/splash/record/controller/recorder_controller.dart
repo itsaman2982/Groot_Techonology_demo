@@ -24,8 +24,6 @@ class RecordController extends GetxController {
   Timer? _amplitudeTimer;
   Timer? _playbackTimer;
 
-  List<double> amplitudeBuffer = [];
-  static const int bufferSize = 5; // Adjust to control smoothness
   @override
   void onInit() {
     super.onInit();
@@ -68,14 +66,13 @@ class RecordController extends GetxController {
       isRecording.value = true;
       maxDuration.value = Duration.zero;
       elapsedDuration.value = Duration.zero;
-      samples.clear(); // ✅ Clear old waveform data before new recording starts
+      samples.clear();
 
       _recorder.onProgress!.listen((event) {
         if (!isRecording.value) return;
 
         elapsedDuration.value = event.duration;
 
-        // ✅ Generate waveform data dynamically
         double amplitude = event.decibels != null
             ? (event.decibels! / 120).clamp(0.0, 1.0)
             : 0.0;
@@ -84,7 +81,7 @@ class RecordController extends GetxController {
 
         samples.add(amplitude);
         if (samples.length > 100) {
-          samples.removeAt(0); // ✅ Maintain a rolling buffer of 100 values
+          samples.removeAt(0);
         }
       });
     } catch (e) {
@@ -145,7 +142,7 @@ class RecordController extends GetxController {
         codec: Codec.pcm16WAV,
         whenFinished: () {
           isPlaying.value = false;
-          _playbackTimer?.cancel(); // Stop waveform animation
+          _playbackTimer?.cancel();
         },
       );
 
@@ -153,7 +150,7 @@ class RecordController extends GetxController {
       elapsedDuration.value = Duration.zero;
 
       _player.onProgress!.listen((event) {
-        elapsedDuration.value = event.position; // Update progress dynamically
+        elapsedDuration.value = event.position;
       });
 
       _playbackTimer =
@@ -163,7 +160,6 @@ class RecordController extends GetxController {
           return;
         }
 
-        // Generate smooth waveform effect for visualization
         double amplitude =
             (0.5 + 0.5 * (DateTime.now().millisecondsSinceEpoch % 1000) / 1000);
         currentAmplitude.value = amplitude;

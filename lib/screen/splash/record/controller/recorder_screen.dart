@@ -1,4 +1,5 @@
 import 'package:demoproject/screen/splash/record/controller/recorder_controller.dart';
+import 'package:demoproject/widgets/custom_fab.dart';
 import 'package:demoproject/widgets/recording_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -41,14 +42,9 @@ class AudioRecorderScreen extends GetView<RecordController> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.amber,
-        onPressed: controller.goToAudioVisualizationScreen,
-        child: const Icon(
-          Icons.mic,
-          color: Colors.black,
-        ),
-      ),
+      floatingActionButton: CustomFAB(onPressed: () {
+        controller.goToAudioVisualizationScreen();
+      }),
     );
   }
 }

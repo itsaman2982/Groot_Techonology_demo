@@ -1,3 +1,4 @@
+import 'package:demoproject/widgets/custom_fab.dart';
 import 'package:demoproject/widgets/waveform_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -98,7 +99,7 @@ class _AudioVisualizationScreenState extends State<AudioVisualizationScreen> {
         ],
       ),
       floatingActionButton: Obx(
-        () => FloatingActionButton(
+        () => CustomFAB(
           onPressed: () {
             if (controller.isRecording.value) {
               controller.stopRecording();
@@ -107,11 +108,6 @@ class _AudioVisualizationScreenState extends State<AudioVisualizationScreen> {
               controller.startRecording();
             }
           },
-          backgroundColor: Colors.amber,
-          child: Icon(
-            controller.isRecording.value ? Icons.stop : Icons.mic,
-            color: Colors.black,
-          ),
         ),
       ),
     );
